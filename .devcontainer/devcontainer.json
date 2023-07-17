@@ -4,10 +4,11 @@
     "ghcr.io/devcontainers/features/node:1": {}
   },
   "customizations": {
-  "vscode": {
-    "extensions": [
-      "GitHub.copilot",
-      "GitHub.copilot-chat"
-    ]
+    "vscode": {
+      "extensions": [
+        "GitHub.copilot",
+        "GitHub.copilot-chat"
+      ]
+    }
   }
 }
