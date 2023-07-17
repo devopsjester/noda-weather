@@ -1,4 +1,4 @@
-const zipcode = process.argv[2];
+const zipcode = process.argv[2] || '10001';
 console.log(`The zipcode entered is: ${zipcode}`);
 
 // get the latitude and longitude from the zipcode
@@ -9,4 +9,7 @@ geocode.getLatLong(zipcode, (error, data) => {
     } else {
         console.log(data);
     }
-}); // <-- added missing closing parenthesis
+});
+
+// get the weather from the latitude and longitude
+
