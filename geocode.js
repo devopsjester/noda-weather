@@ -1,14 +1,16 @@
-const getLatLongFromCityState = async (location) => {
-    const city = encodeURIComponent(location.split(',')[0].trim());
-    const state = encodeURIComponent(location.split(',')[1].trim());
-    const url = `https://api.zippopotam.us/us/${state}/${city}`;
+const getLatLongFromCityState = async (city, state, country) => {
+    const encodedCity = encodeURIComponent(city.trim());
+    const encodedState = encodeURIComponent(state.trim());
+    const encodedCountry = encodeURIComponent(country.trim());
+    const url = `https://api.zippopotam.us/${encodedCountry}/${encodedState}/${encodedCity}`;
     const { lat, long } = await getLocationFrom(url);
 
     return { lat, long }
 };
 
-const getLatLongFromZip = async (zip) => {
-    const url = `https://api.zippopotam.us/us/${zip}`;
+const getLatLongFromZip = async (zip, country) => {
+    const encodedCountry = encodeURIComponent(country.trim());
+    const url = `https://api.zippopotam.us/${encodedCountry}/${zip}`;
     const { lat, long } = await getLocationFrom(url);
 
     return { lat, long };
