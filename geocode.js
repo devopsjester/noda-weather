@@ -1,23 +1,28 @@
-// geocode.js
+const getLatLongFromCityState = async (location) => {
+    const city = encodeURIComponent(location.split(',')[0].trim());
+    const state = encodeURIComponent(location.split(',')[1].trim());
+    const url = `https://api.zippopotam.us/us/${state}/${city}`;
+    const { lat, long } = await getLocationFrom(url);
 
-const request = require('request');
-
-const getLatLong = (zipcode, callback) => {
-    // use zipopotam.us to get the latitude and longitude
-    const url = `http://api.zippopotam.us/us/${zipcode}`;
-    request({ url, json: true }, (error, response) => {
-        if (error) {
-            callback('Unable to connect to location services!', undefined);
-        } else if (response.body.error) {
-            callback('Unable to find location. Try another search.', undefined);
-        } else {
-            const { latitude, longitude } = response.body.places[0];
-            callback(undefined, { latitude, longitude });
-        }
-    });
+    return { lat, long }
 };
 
+const getLatLongFromZip = async (zip) => {
+    const url = `https://api.zippopotam.us/us/${zip}`;
+    const { lat, long } = await getLocationFrom(url);
+
+    return { lat, long };
+};
+
+async function getLocationFrom(url) {
+    const response = await fetch(url);
+    const data = await response.json();
+    const lat = data.places[0]['latitude'];
+    const long = data.places[0]['longitude'];
+    return { lat, long };
+}
 
 module.exports = {
-    getLatLong
+    getLatLongFromCityState,
+    getLatLongFromZip
 };

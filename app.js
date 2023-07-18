@@ -1,15 +1,23 @@
-const zipcode = process.argv[2] || '10001';
-console.log(`The zipcode entered is: ${zipcode}`);
-
-// get the latitude and longitude from the zipcode
 const geocode = require('./geocode');
-geocode.getLatLong(zipcode, (error, data) => {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log(data);
-    }
-});
+const weather = require('./weather');
 
-// get the weather from the latitude and longitude
+const location = process.argv[2] || '10001';
+
+async function getWeather(location) {
+    let latitude, longitude;
+    if (isNaN(location)) {
+        const { lat, long } = await geocode.getLatLongFromCityState(location);
+        latitude = lat;
+        longitude = long;
+    } else {
+        const { lat, long } = await geocode.getLatLongFromZip(location);
+        latitude = lat;
+        longitude = long;
+    }
+    const temperature = await weather.getCurrentWeather(latitude, longitude);
+    console.log(`The temperature in ${location} is ${temperature}F.`);
+}
+
+getWeather(location);
+
 
