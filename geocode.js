@@ -1,19 +1,29 @@
 const getLatLongFromCityState = async (city, state, country) => {
-    const encodedCity = encodeURIComponent(city.trim());
-    const encodedState = encodeURIComponent(state.trim());
-    const encodedCountry = encodeURIComponent(country.trim());
-    const url = `https://api.zippopotam.us/${encodedCountry}/${encodedState}/${encodedCity}`;
-    const { lat, long } = await getLocationFrom(url);
+    try {
+        const encodedCity = encodeURIComponent(city.trim());
+        const encodedState = encodeURIComponent(state.trim());
+        const encodedCountry = encodeURIComponent(country.trim());
+        const url = `https://api.zippopotam.us/${encodedCountry}/${encodedState}/${encodedCity}`;
+        const { lat, long } = await getLocationFrom(url);
 
-    return { lat, long }
+        return { lat, long };
+    } catch (error) {
+        console.error(error);
+        throw new Error('Invalid input. Please provide a valid city, state, and country.');
+    }
 };
 
 const getLatLongFromZip = async (zip, country) => {
-    const encodedCountry = encodeURIComponent(country.trim());
-    const url = `https://api.zippopotam.us/${encodedCountry}/${zip}`;
-    const { lat, long } = await getLocationFrom(url);
+    try {
+        const encodedCountry = encodeURIComponent(country.trim());
+        const url = `https://api.zippopotam.us/${encodedCountry}/${zip}`;
+        const { lat, long } = await getLocationFrom(url);
 
-    return { lat, long };
+        return { lat, long };
+    } catch (error) {
+        console.error(error);
+        throw new Error('Invalid input. Please provide a valid zip code and country.');
+    }
 };
 
 async function getLocationFrom(url) {
